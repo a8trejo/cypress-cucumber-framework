@@ -59,3 +59,5 @@ jobs:
           CYPRESS_envKey: ${{env.TEST_ENVIRONMENT}}
           CYPRESS_TAGS: "not @skip"
           CYPRESS_ACTION_TEST: ${{ secrets.CYPRESS_ACTION_TEST }}
+          CYPRESS_username: ${{ secrets.CYPRESS_USERNAME }}
+          CYPRESS_password: ${{ secrets.CYPRESS_PASSWORD }}

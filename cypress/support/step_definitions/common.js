@@ -15,4 +15,7 @@ defineStep('I can say Hi to Github Actions', () => {
         cy.logMsg("Cypress Env Var for ACTION_TEST is " + githubKeys.config_ACTION_TEST)
         cy.logMsg("Environment under Test is: " + envKey)
     })
+
+    const authorizedMsg = "Congratulations! You must have the proper credentials"
+    HeroAppQuery.selectors("authorizedMsg").should('contain', authorizedMsg)
 })
