@@ -34,6 +34,8 @@ jobs:
           cd cypress/config/cucumber_json
           curl https://github.com/cucumber/json-formatter/releases/download/v19.0.0/cucumber-json-formatter-linux-amd64 -o cucumber-json-formatter
           chmod +x cucumber-json-formatter
+          echo "USER_$(echo ${{ inputs.env }} | tr '[:lower:]' '[:upper:]')=${{ secrets.CYPRESS_USERNAME }}" >> $GITHUB_ENV
+          echo "PASS_$(echo ${{ inputs.env }} | tr '[:lower:]' '[:upper:]')=${{ secrets.CYPRESS_PASSWORD }}" >> $GITHUB_ENV
 
       # Run Test and Deploy
       - name: Quality Gates
@@ -59,5 +61,5 @@ jobs:
           CYPRESS_envKey: ${{env.TEST_ENVIRONMENT}}
           CYPRESS_TAGS: "not @skip"
           CYPRESS_ACTION_TEST: ${{ secrets.CYPRESS_ACTION_TEST }}
-          CYPRESS_username: ${{ secrets.CYPRESS_USERNAME }}
-          CYPRESS_password: ${{ secrets.CYPRESS_PASSWORD }}
+          CYPRESS_username: ${{ env.USER_DEV }}
+          CYPRESS_password: ${{ env.PASS_DEV }}
