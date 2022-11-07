@@ -7,8 +7,8 @@ When('I click on the {string} demo option', (option) => {
     // Define and Encode the authentication string
     const authString = `${Cypress.env("username")}:${Cypress.env("password")}`;
     cy.logMsg(authString)
-    
-    const encodedAuth = Buffer.from(authString).toString('base64')
+
+    const encodedAuth = window.btoa(authString);
 
     // Preparing to intercept the /basic_auth request and add the auth header once we click on login
     cy.intercept('GET', '**/basic_auth', (req) => {
