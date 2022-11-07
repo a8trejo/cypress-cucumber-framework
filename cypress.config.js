@@ -88,4 +88,7 @@ function getConfigByFile(envKey, config) {
 function readGitHubSecrets(config) {
     githubActionsKeys["process_env_CYPRESS_ACTION_TEST"] = process.env.CYPRESS_ACTION_TEST
     githubActionsKeys["config_ACTION_TEST"] = config.env.ACTION_TEST
+
+    githubActionsKeys["Username"] = process.env.USER_DEV
+    githubActionsKeys["Password"] = process.env.PASS_DEV
 }
