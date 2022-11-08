@@ -42,7 +42,7 @@ jobs:
       - name: Secrets Shell
         run: |
           SECRETS_LIST=$(echo '${{ toJSON(secrets) }}' | jq -r 'keys[] as $k | "\($k)=\(.[$k])"')
-          .github/scripts/github-secrets.sh ${{ inputs.env }} $SECRETS_LIST
+          .github/scripts/github-secrets.sh ${{ inputs.env }} $(echo $SECRETS_LIST)
 
       # Run Test and Deploy
       - name: Quality Gates
