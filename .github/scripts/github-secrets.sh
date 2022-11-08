@@ -2,9 +2,8 @@
 
 echo "$1"
 
-echo "$2"
-
 secrets=$2
+echo $secrets
 
 for key in "${!secrets[@]}"
 do
