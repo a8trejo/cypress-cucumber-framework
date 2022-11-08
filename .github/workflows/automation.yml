@@ -42,7 +42,6 @@ jobs:
       - name: Secrets Shell
         run: |
           SECRETS_LIST=$(echo '${{ toJSON(secrets) }}' | jq -r 'keys[] as $k | "\($k)=\(.[$k])"')
-          echo $SECRETS_LIST
           .github/scripts/github-secrets.sh ${{ inputs.env }} $SECRETS_LIST
 
       # Run Test and Deploy
