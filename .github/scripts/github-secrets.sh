@@ -3,9 +3,12 @@ echo "$1"
 SECRETS_LIST=$(cat .env)
 ENV_KEY=$(echo $1 | tr '[:lower:]' '[:upper:]')
 
-while IFS= read -r secret; do
+cat .env
 
-    SECRET_CYPRESS=$(echo $secret | sed "s/=/_$ENV_KEY=/g" | sed "s/'//g")
+while IFS= read -r secret; do
+    echo $secret | sed "s/=/_$ENV_KEY=/g"
+    SECRET_CYPRESS=$(echo $secret | sed "s/=/_$ENV_KEY=/g")
+    # SECRET_CYPRESS=$(echo $secret | sed "s/=/_$ENV_KEY=/g" | sed "s/'//g")
     export $SECRET_CYPRESS
   
 done <<< "$SECRETS_LIST"
