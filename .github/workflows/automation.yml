@@ -41,7 +41,7 @@ jobs:
       # chmod +x .github/scripts/github-secrets.sh
       - name: Secrets Shell
         run: |
-          SECRETS_JSON=$( ${{ toJSON(secrets) }} )
+          SECRETS_JSON=$(echo '${{ toJSON(secrets) }}' )
           .github/scripts/github-secrets.sh ${{ inputs.env }} $SECRETS_JSON
 
       # Run Test and Deploy
