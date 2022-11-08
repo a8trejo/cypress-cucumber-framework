@@ -47,6 +47,7 @@ jobs:
       - name: Quality Gates
         run: |
           echo Running in ${{ env.TEST_ENVIRONMENT }}
+          echo $(env)
           echo Test, and deploy your project
 
       #NPM Installation and Cypress execution
