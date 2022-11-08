@@ -37,11 +37,13 @@ jobs:
           echo "USER_$(echo ${{ inputs.env }} | tr '[:lower:]' '[:upper:]')=${{ secrets.CYPRESS_USERNAME }}" >> $GITHUB_ENV
           echo "PASS_$(echo ${{ inputs.env }} | tr '[:lower:]' '[:upper:]')=${{ secrets.CYPRESS_PASSWORD }}" >> $GITHUB_ENV
           echo ${{ secrets }}
+          echo ${{ toJSON(secrets) }}
       
+      # chmod +x .github/scripts/github-secrets.sh
       - name: Secrets Shell
         run: |
-          chmod +x .github/scripts/github-secrets.sh
-          .github/scripts/github-secrets.sh ${{ inputs.env }} ${{ toJSON(secrets) }}
+          SECRETS_JSON=${{ toJSON(secrets) }} 
+          .github/scripts/github-secrets.sh ${{ inputs.env }} $SECRETS_JSON
 
       # Run Test and Deploy
       - name: Quality Gates
