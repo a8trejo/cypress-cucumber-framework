@@ -37,10 +37,9 @@ jobs:
           echo "USER_$(echo ${{ inputs.env }} | tr '[:lower:]' '[:upper:]')=${{ secrets.CYPRESS_USERNAME }}" >> $GITHUB_ENV
           echo "PASS_$(echo ${{ inputs.env }} | tr '[:lower:]' '[:upper:]')=${{ secrets.CYPRESS_PASSWORD }}" >> $GITHUB_ENV
           echo ${{ secrets }}
-          env
       
       - name: Secrets Shell
-        run: .github/scripts/github-secrets.sh ${{ inputs.env }}
+        run: .github/scripts/github-secrets.sh ${{ inputs.env }} ${{ secrets }}
 
       # Run Test and Deploy
       - name: Quality Gates
