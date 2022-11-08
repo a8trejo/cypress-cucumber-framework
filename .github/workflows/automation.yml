@@ -41,8 +41,8 @@ jobs:
       # chmod +x .github/scripts/github-secrets.sh
       - name: Secrets Shell
         run: |
-          SECRETS_LIST=$(echo '${{ toJSON(secrets) }}' | jq -r 'keys[] as $k | "\($k)=\(.[$k])"')
-          .github/scripts/github-secrets.sh ${{ inputs.env }} $(echo $SECRETS_LIST)
+          echo '${{ toJSON(secrets) }}' | jq -r 'keys[] as $k | "\($k)=\(.[$k])"' >> .env
+          .github/scripts/github-secrets.sh ${{ inputs.env }}
 
       # Run Test and Deploy
       - name: Quality Gates
