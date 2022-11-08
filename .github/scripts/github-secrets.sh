@@ -1,7 +1,6 @@
 #!/bin/sh
 
 echo "$1"
-echo $(env)
 
 echo "$2"
 secrets = $2

@@ -40,9 +40,8 @@ jobs:
       
       - name: Secrets Shell
         run: |
-          pwd
           chmod +x .github/scripts/github-secrets.sh
-          .github/scripts/github-secrets.sh ${{ inputs.env }} ${{ secrets }}
+          .github/scripts/github-secrets.sh ${{ inputs.env }} ${{ toJSON(secrets) }}
 
       # Run Test and Deploy
       - name: Quality Gates
