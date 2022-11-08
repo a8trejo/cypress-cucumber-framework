@@ -42,7 +42,7 @@ jobs:
       - name: Secrets Shell
         run: |
           SECRETS_JSON=$(echo '${{ toJSON(secrets) }}')
-          echo $SECRETS_JSON
+          echo $SECRETS_JSON | jq
           .github/scripts/github-secrets.sh ${{ inputs.env }} $SECRETS_JSON
 
       # Run Test and Deploy
