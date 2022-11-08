@@ -15,3 +15,5 @@ while IFS= read -r secret; do
 done <<< "$SECRETS_LIST"
 
 echo "----------------------------------------------------------------------"
+
+echo $(env)
