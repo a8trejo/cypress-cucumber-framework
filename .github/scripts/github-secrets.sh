@@ -1,13 +1,15 @@
 #!/bin/sh
 
 echo "$1"
-echo "$2"
 
 SECRETS_LIST=$(cat .env)
-echo $SECRETS_LIST
-# while IFS= read -r secret; do
+ENV_KEY=$(echo $1 | tr '[:lower:]' '[:upper:]')
+echo $ENV_KEY
+while IFS= read -r secret; do
+    
+    # echo "USER_$()=${{ secrets.CYPRESS_USERNAME }}"
+
+    SECRET_CYPRESS=$(echo $secret | sed "s/=/_$ENV_KEY=/g" | sed "s/'//g")
+    export $SECRET_CYPRESS
   
-#     # SECRET_CYPRESS=$(echo $secret | sed "s/'//g")
-#     export $SECRET_CYPRESS
-  
-# done <<< "$2"
+done <<< "$SECRETS_LIST"

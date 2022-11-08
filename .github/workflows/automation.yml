@@ -36,7 +36,6 @@ jobs:
           chmod +x cucumber-json-formatter
           echo "USER_$(echo ${{ inputs.env }} | tr '[:lower:]' '[:upper:]')=${{ secrets.CYPRESS_USERNAME }}" >> $GITHUB_ENV
           echo "PASS_$(echo ${{ inputs.env }} | tr '[:lower:]' '[:upper:]')=${{ secrets.CYPRESS_PASSWORD }}" >> $GITHUB_ENV
-          echo '${{ toJSON(secrets) }}'
       
       # chmod +x .github/scripts/github-secrets.sh
       - name: Secrets Shell
