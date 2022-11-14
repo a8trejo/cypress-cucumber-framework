@@ -52,6 +52,7 @@ jobs:
 
       #NPM Installation and Cypress execution
       - name: Cypress Execution
+        if: (${{ inputs.env = 'dev' || inputs.deployment =  'yes' }})
         uses: cypress-io/github-action@v4
         with:
           ci-build-id: '${{ github.job }}:${{ github.run_number }}-${{ github.run_attempt }}'
