@@ -48,7 +48,7 @@ jobs:
         run: |
           echo Running in ${{ env.TEST_ENVIRONMENT }}
           echo $(env)
-          echo "TRIGGER_AUTOMATION=false" >> $GITHUB_ENV
+          echo "TRIGGER_AUTOMATION=true" >> $GITHUB_ENV
           echo Test, and deploy your project
 
       #NPM Installation and Cypress execution
