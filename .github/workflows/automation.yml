@@ -38,10 +38,10 @@ jobs:
           echo "PASS_$(echo ${{ inputs.env }} | tr '[:lower:]' '[:upper:]')=${{ secrets.CYPRESS_PASSWORD }}" >> $GITHUB_ENV
       
       # chmod +x .github/scripts/github-secrets.sh
-      - name: Secrets Shell
-        run: |
-          echo '${{ toJSON(secrets) }}' | jq -r 'keys[] as $k | "\($k)=\(.[$k])"' >> .env
-          .github/scripts/github-secrets.sh ${{ inputs.env }}
+      # - name: Secrets Shell
+      #  run: |
+      #    echo '${{ toJSON(secrets) }}' | jq -r 'keys[] as $k | "\($k)=\(.[$k])"' >> .env
+      #    .github/scripts/github-secrets.sh ${{ inputs.env }}
 
       # Run Test and Deploy
       - name: Quality Gates
@@ -53,7 +53,7 @@ jobs:
 
       #NPM Installation and Cypress execution
       - name: Cypress Execution
-        if: (${{ inputs.env == 'dev' }} || ${{ env.TRIGGER_AUTOMATION ==  true }} )
+        if: ${{( inputs.env == 'dev' || env.TRIGGER_AUTOMATION ==  true )}}
         uses: cypress-io/github-action@v4
         with:
           ci-build-id: '${{ github.job }}:${{ github.run_number }}-${{ github.run_attempt }}'
