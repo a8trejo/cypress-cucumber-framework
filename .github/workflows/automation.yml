@@ -48,11 +48,12 @@ jobs:
         run: |
           echo Running in ${{ env.TEST_ENVIRONMENT }}
           echo $(env)
+          echo "TRIGGER_AUTOMATION=false" >> $GITHUB_ENV
           echo Test, and deploy your project
 
       #NPM Installation and Cypress execution
       - name: Cypress Execution
-        if: (${{ inputs.env }} = 'dev' || ${{ inputs.deployment }} =  'no' )
+        if: (${{ inputs.env == 'dev' }} || ${{ env.TRIGGER_AUTOMATION ==  true }} )
         uses: cypress-io/github-action@v4
         with:
           ci-build-id: '${{ github.job }}:${{ github.run_number }}-${{ github.run_attempt }}'
