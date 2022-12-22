@@ -77,7 +77,11 @@ jobs:
       
       - name: Check Reports Outputs
         run: |
-          cat cypress/results/reports/cucumber_json/cucumber-messages.ndjson
-          cat cypress/results/reports/cucumber_json/cucumber-messages.ndjson | cucumber-json-formatter > cucumber-results.json
-          cat cucumber-results.json
+          echo 'JSON_REPORT<<EOF' >> $GITHUB_ENV
+          cat cypress/results/reports/cucumber_json/cucumber-messages.ndjson >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+      
+      - name: Check Reports Outputs
+        run: |
+          echo ${{ env.JSON_REPORT }} | cucumber-json-formatter > cucumber-results.json
 
