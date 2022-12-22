@@ -30,7 +30,6 @@ async function setupNodeEvents(on, config) {
     });
 
     const envKey = config.env.envKey || 'default';
-    config.env.TEST_TRIGGER = 'local';
 
     if (envKey !== 'default') {
       return getConfigByFile(envKey, config);
