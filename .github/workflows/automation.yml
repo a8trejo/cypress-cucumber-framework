@@ -17,7 +17,7 @@ on:
 
 jobs:
   cypress-github-pipeline:
-    runs-on: ubuntu-latest
+    runs-on: macos-11
     environment: ${{ inputs.env }}
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -32,7 +32,7 @@ jobs:
           mkdir cypress/config/cucumber_json
           echo "${{ github.workspace }}/cypress/config/cucumber_json" >> $GITHUB_PATH
           cd cypress/config/cucumber_json
-          curl https://github.com/cucumber/json-formatter/releases/download/v19.0.0/cucumber-json-formatter-linux-amd64 -o cucumber-json-formatter
+          curl https://github.com/cucumber/json-formatter/releases/download/v19.0.0/cucumber-json-formatter-darwin-amd64 -o cucumber-json-formatter
           chmod +x cucumber-json-formatter
           echo "USER_$(echo ${{ inputs.env }} | tr '[:lower:]' '[:upper:]')=${{ secrets.CYPRESS_USERNAME }}" >> $GITHUB_ENV
           echo "PASS_$(echo ${{ inputs.env }} | tr '[:lower:]' '[:upper:]')=${{ secrets.CYPRESS_PASSWORD }}" >> $GITHUB_ENV
@@ -75,12 +75,12 @@ jobs:
           COMMIT_INFO_MESSAGE: Run triggered by ${{github.event_name}} on ${{env.TEST_ENVIRONMENT}} environment
           COMMIT_INFO_SHA: ${{github.event.pull_request.head.sha}}
       
-      - name: Check Reports Outputs
-        run: |
-          echo 'JSON_REPORT<<EOF' >> $GITHUB_ENV
-          cat 'cypress/results/reports/cucumber_json/cucumber-messages.ndjson' | cucumber-json-formatter > cucumber-results.json >> $GITHUB_ENV
-          echo 'EOF' >> $GITHUB_ENV
-          cat cucumber-results.json
+      # - name: Check Reports Outputs
+      #   run: |
+      #     echo 'JSON_REPORT<<EOF' >> $GITHUB_ENV
+      #     cat 'cypress/results/reports/cucumber_json/cucumber-messages.ndjson' | cucumber-json-formatter > cucumber-results.json >> $GITHUB_ENV
+      #     echo 'EOF' >> $GITHUB_ENV
+      #     cat cucumber-results.json
       
       - name: Check Reports Outputs
         if: always()
