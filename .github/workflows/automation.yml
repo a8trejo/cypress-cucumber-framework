@@ -46,6 +46,8 @@ jobs:
       # Run Test and Deploy
       - name: Quality Gates
         run: |
+          echo ${{ github.actor }} : ${{ github.triggering_actor }} : ${{ github.action_ref }} : 
+          echo ${{ github.repository }} : ${{ github.sha }}
           echo Running in ${{ env.TEST_ENVIRONMENT }}
           echo $(env)
           echo "TRIGGER_AUTOMATION=true" >> $GITHUB_ENV
