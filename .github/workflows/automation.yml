@@ -49,7 +49,10 @@ jobs:
           echo ${{ github.actor }} : ${{ github.triggering_actor }} : ${{ github.action_ref }} : 
           echo ${{ github.repository }} : ${{ github.sha }}
           echo ${{ github.event_path }} : ${{ github.sha }}
-          echo "CLOUD_MSG=$(echo Cypress Automation `git log --pretty=oneline --format='%C(auto) %h %s' | head -n 1`)" >> $GITHUB_ENV
+          
+          GIT_LOG=`git log --pretty=oneline --format='%C(auto) %h %s' | head -n 1`
+          echo "CLOUD_MSG=$(echo Cypress Automation $GIT_LOG)" >> $GITHUB_ENV
+
           echo Running in ${{ env.TEST_ENVIRONMENT }}
           echo $(env)
           echo "TRIGGER_AUTOMATION=true" >> $GITHUB_ENV
