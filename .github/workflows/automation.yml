@@ -51,7 +51,7 @@ jobs:
           echo ${{ github.event_path }} : ${{ github.sha }}
           
           GIT_LOG=`git log --pretty=oneline --format='%C(auto) %h %s' | head -n 1`
-          echo "CLOUD_MSG=$(echo Cypress Automation $GIT_LOG)" >> $GITHUB_ENV
+          echo "CLOUD_MSG=$(echo ${{github.repository}} $GIT_LOG)" >> $GITHUB_ENV
 
           echo Running in ${{ env.TEST_ENVIRONMENT }}
           echo $(env)
