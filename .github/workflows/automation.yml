@@ -49,8 +49,7 @@ jobs:
           echo ${{ github.actor }} : ${{ github.triggering_actor }} : ${{ github.action_ref }} : 
           echo ${{ github.repository }} : ${{ github.sha }}
           echo ${{ github.event_path }} : ${{ github.sha }}
-          echo "CLOUD_MSG=Cypress Automation $(git log --pretty=oneline \
-            --format='%C(auto) %h %s' \ | head -n 1)" >> $GITHUB_ENV
+          echo "CLOUD_MSG=$(echo Cypress Automation `git log --pretty=oneline --format='%C(auto) %h %s' | head -n 1`)" >> $GITHUB_ENV
           echo Running in ${{ env.TEST_ENVIRONMENT }}
           echo $(env)
           echo "TRIGGER_AUTOMATION=true" >> $GITHUB_ENV
@@ -77,7 +76,7 @@ jobs:
           CYPRESS_ACTION_TEST: ${{ secrets.CYPRESS_ACTION_TEST }}
           CYPRESS_username: ${{ env.USER_DEV }}
           CYPRESS_password: ${{ env.PASS_DEV }}
-          COMMIT_INFO_MESSAGE: Run triggered by ${{github.event_name}} on ${{env.TEST_ENVIRONMENT}} environment
+          COMMIT_INFO_MESSAGE: ${{ env.CLOUD_MSG }}
           COMMIT_INFO_SHA: ${{github.event.pull_request.head.sha}}
       
       # - name: Check Reports Outputs
