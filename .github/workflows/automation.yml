@@ -50,8 +50,8 @@ jobs:
           echo ${{ github.repository }} : ${{ github.sha }}
           echo ${{ github.event_path }} : ${{ github.sha }}
           
-          GIT_LOG=`git log --pretty=oneline --format='%C(auto) %h %s' | head -n 1`
-          echo "CLOUD_MSG=$(echo ${{github.repository}}/commit/$GIT_LOG)" >> $GITHUB_ENV
+          GIT_MSG=`git log --pretty=oneline --format='%s' | head -n 1`
+          echo "CLOUD_MSG=$(echo $GIT_MSG ${{github.repository}}/commit/${{ github.sha }})" >> $GITHUB_ENV
 
           echo Running in ${{ env.TEST_ENVIRONMENT }}
           echo $(env)
@@ -64,7 +64,7 @@ jobs:
         uses: cypress-io/github-action@v4
         with:
           ci-build-id: '${{ github.job }}:${{ github.run_number }}-${{ github.run_attempt }}'
-          tag: '${{ github.job }}:${{ github.run_number }}-${{ github.run_attempt }}'
+          tag: ${{ env.TEST_ENVIRONMENT }}
           record: true
           browser: chrome
           headed: false
