@@ -46,15 +46,12 @@ jobs:
       # Run Test and Deploy
       - name: Quality Gates
         run: |
-          echo ${{ github.actor }} : ${{ github.triggering_actor }} : ${{ github.action_ref }} : 
-          echo ${{ github.repository }} : ${{ github.sha }}
-          echo ${{ github.event_path }} : ${{ github.sha }}
           
-          GIT_MSG=`git log --pretty=oneline --format='%s' | head -n 1`
-          echo "CLOUD_MSG=$(echo $GIT_MSG ${{github.repository}}/commit/${{ github.sha }})" >> $GITHUB_ENV
+          REPO_NAME=`echo ${{ github.repository }} | sed 's/.*\///'`
+          GIT_LOG=`git log --pretty=oneline --format='%s %h' | head -n 1`
+          echo "CLOUD_MSG=$(echo $GIT_LOG $REPO_NAME)" >> $GITHUB_ENV
 
           echo Running in ${{ env.TEST_ENVIRONMENT }}
-          echo $(env)
           echo "TRIGGER_AUTOMATION=true" >> $GITHUB_ENV
           echo Test, and deploy your project
 
