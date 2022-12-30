@@ -20,3 +20,9 @@ In order to run the automated test suite, please follow the steps described belo
 
 3. To generate the mochawesome complete report, first execute the tests headless and afterwards run the command:  
    `npm run awesome-report`
+
+#### References
+- https://github.com/badeball/cypress-cucumber-preprocessor/blob/master/docs/configuration.md
+- https://github.com/badeball/cypress-cucumber-preprocessor/blob/master/docs/tags.md#tags
+- https://github.com/badeball/cypress-cucumber-preprocessor/blob/master/docs/cucumber-basics.md
+- `cat cypress/results/reports/cucumber_json/cucumber-messages.ndjson | cucumber-json-formatter > cucumber-results.json`

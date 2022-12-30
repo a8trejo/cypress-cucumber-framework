@@ -17,8 +17,8 @@ on:
 
 jobs:
   cypress-github-pipeline:
-    runs-on: ubuntu-latest
-
+    runs-on: macos-11
+    environment: ${{ inputs.env }}
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -32,21 +32,36 @@ jobs:
           mkdir cypress/config/cucumber_json
           echo "${{ github.workspace }}/cypress/config/cucumber_json" >> $GITHUB_PATH
           cd cypress/config/cucumber_json
-          curl https://github.com/cucumber/json-formatter/releases/download/v19.0.0/cucumber-json-formatter-linux-amd64 -o cucumber-json-formatter
+          curl https://github.com/cucumber/json-formatter/releases/download/v19.0.0/cucumber-json-formatter-darwin-amd64 -o cucumber-json-formatter
           chmod +x cucumber-json-formatter
+          echo "USER_$(echo ${{ inputs.env }} | tr '[:lower:]' '[:upper:]')=${{ secrets.CYPRESS_USERNAME }}" >> $GITHUB_ENV
+          echo "PASS_$(echo ${{ inputs.env }} | tr '[:lower:]' '[:upper:]')=${{ secrets.CYPRESS_PASSWORD }}" >> $GITHUB_ENV
+      
+      # chmod +x .github/scripts/github-secrets.sh
+      # - name: Secrets Shell
+      #  run: |
+      #    echo '${{ toJSON(secrets) }}' | jq -r 'keys[] as $k | "\($k)=\(.[$k])"' >> .env
+      #    .github/scripts/github-secrets.sh ${{ inputs.env }}
 
       # Run Test and Deploy
       - name: Quality Gates
         run: |
+          
+          REPO_NAME=`echo ${{ github.repository }} | sed 's/.*\///'`
+          GIT_LOG=`git log --pretty=oneline --format='%s %h' | head -n 1`
+          echo "CLOUD_MSG=$(echo $GIT_LOG $REPO_NAME)" >> $GITHUB_ENV
+
           echo Running in ${{ env.TEST_ENVIRONMENT }}
+          echo "TRIGGER_AUTOMATION=true" >> $GITHUB_ENV
           echo Test, and deploy your project
 
       #NPM Installation and Cypress execution
       - name: Cypress Execution
+        if: ${{( inputs.env == 'dev' || env.TRIGGER_AUTOMATION ==  true )}}
         uses: cypress-io/github-action@v4
         with:
           ci-build-id: '${{ github.job }}:${{ github.run_number }}-${{ github.run_attempt }}'
-          tag: '${{ github.job }}:${{ github.run_number }}-${{ github.run_attempt }}'
+          tag: ${{ env.TEST_ENVIRONMENT }}
           record: true
           browser: chrome
           headed: false
@@ -59,3 +74,21 @@ jobs:
           CYPRESS_envKey: ${{env.TEST_ENVIRONMENT}}
           CYPRESS_TAGS: "not @skip"
           CYPRESS_ACTION_TEST: ${{ secrets.CYPRESS_ACTION_TEST }}
+          CYPRESS_username: ${{ env.USER_DEV }}
+          CYPRESS_password: ${{ env.PASS_DEV }}
+          COMMIT_INFO_MESSAGE: ${{ env.CLOUD_MSG }}
+          COMMIT_INFO_SHA: ${{github.event.pull_request.head.sha}}
+      
+      # - name: Check Reports Outputs
+      #   run: |
+      #     echo 'JSON_REPORT<<EOF' >> $GITHUB_ENV
+      #     cat 'cypress/results/reports/cucumber_json/cucumber-messages.ndjson' | cucumber-json-formatter > cucumber-results.json >> $GITHUB_ENV
+      #     echo 'EOF' >> $GITHUB_ENV
+      #     cat cucumber-results.json
+      
+      - name: Check Reports Outputs
+        if: always()
+        run: |
+          cat 'cypress/results/reports/cucumber_json/cucumber-messages.ndjson' | cucumber-json-formatter > cucumber-results.json
+          cat cucumber-results.json
+
